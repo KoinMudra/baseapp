@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { CloseIcon } from '../../assets/images/CloseIcon';
-import { LogoIcon } from '../../assets/images/LogoIcon';
+import { LogoIcon } from '../../assets/images/Logo';
 import { Phone } from '../../containers';
 import { Documents } from '../../containers/Confirm/Documents';
 import { Identity } from '../../containers/Confirm/Identity';
