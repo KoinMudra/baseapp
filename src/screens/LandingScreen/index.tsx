@@ -17,10 +17,8 @@ const FeaturesCommunityIcon = require('../../assets/images/landing/features/Comm
 const FeaturesAPIIcon = require('../../assets/images/landing/features/API.svg');
 
 const TelegramIcon = require('../../assets/images/landing/social/Telegram.svg');
-const LinkedInIcon = require('../../assets/images/landing/social/LinkedIn.svg');
 const TwitterIcon = require('../../assets/images/landing/social/Twitter.svg');
 const YouTubeIcon = require('../../assets/images/landing/social/YouTube.svg');
-const RedditIcon = require('../../assets/images/landing/social/Reddit.svg');
 const FacebookIcon = require('../../assets/images/landing/social/Facebook.svg');
 const MediumIcon = require('../../assets/images/landing/social/Medium.svg');
 const CoinMarketIcon = require('../../assets/images/landing/social/CoinMarket.svg');
@@ -253,15 +251,13 @@ class Landing extends React.Component<Props> {
                     </div>
                     <div className="pg-landing-screen__footer__wrap__social">
                         <div className="pg-landing-screen__footer__wrap__social__row">
-                            <a href="#"><img src={TelegramIcon} alt="Telegram" /></a>
-                            <a href="#"><img src={LinkedInIcon} alt="LinkedIn" /></a>
-                            <a href="#"><img src={TwitterIcon} alt="Twitter" /></a>
-                            <a href="#"><img src={YouTubeIcon} alt="YouTube" /></a>
+                            <a href="https://t.me/KoinMudra"><img src={TelegramIcon} alt="Telegram" /></a>
+                            <a href="https://twitter.com/MudraKoin"><img src={TwitterIcon} alt="Twitter" /></a>
+							<a href="https://medium.com/@koinmudra"><img src={MediumIcon} alt="MediumIcon" /></a>
                         </div>
                         <div className="pg-landing-screen__footer__wrap__social__row">
-                            <a href="#"><img src={RedditIcon} alt="Reddit" /></a>
-                            <a href="#"><img src={FacebookIcon} alt="Facebook" /></a>
-                            <a href="#"><img src={MediumIcon} alt="MediumIcon" /></a>
+                            <a href="https://www.facebook.com/KoinMudra-104352161311900"><img src={FacebookIcon} alt="Facebook" /></a>
+                            <a href="https://www.youtube.com/channel/UCIEwaAO7PE5SvlFo7wNH79w"><img src={YouTubeIcon} alt="YouTube" /></a>
                             <a href="#"><img src={CoinMarketIcon} alt="CoinMarket" /></a>							
                         </div>
                     </div>
