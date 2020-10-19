@@ -2,7 +2,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { MockStoreEnhanced } from 'redux-mock-store';
 import createSagaMiddleware, { SagaMiddleware } from 'redux-saga';
 import { rootSaga } from '../../../';
-import { Cryptobase, defaultConfig } from '../../../../api';
+import { KoinMudra, defaultConfig } from '../../../../api';
 import { setupMockAxios, setupMockStore } from '../../../../helpers/jest';
 import { alertPush } from '../actions';
 import { ALERT_DATA, ALERT_DELETE, ALERT_PUSH } from '../constants';
@@ -23,7 +23,7 @@ describe('Alert success handler', () => {
         sagaMiddleware = createSagaMiddleware();
         store = setupMockStore(sagaMiddleware, debug)();
         sagaMiddleware.run(rootSaga);
-        Cryptobase.config = {
+        KoinMudra.config = {
             ...defaultConfig,
             msAlertDisplayTime: '0.01',
         };

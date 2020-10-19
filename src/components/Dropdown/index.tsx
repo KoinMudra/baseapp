@@ -38,7 +38,7 @@ interface DropdownComponentState {
 }
 
 /**
- *  Cryptobase Dropdown that overrides default dropdown with list of options.
+ *  KoinMudra Dropdown that overrides default dropdown with list of options.
  */
 class DropdownComponent extends React.PureComponent<DropdownComponentProps & {}, DropdownComponentState> {
     constructor(props: DropdownComponentProps) {

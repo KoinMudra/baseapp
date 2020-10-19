@@ -1,4 +1,4 @@
-export const PG_TITLE_PREFIX = 'Cryptobase';
+export const PG_TITLE_PREFIX = 'KoinMudra';
 
 export const pgRoutes = (isLoggedIn: boolean, isLight?: boolean): string[][] => {
     const routes = [
