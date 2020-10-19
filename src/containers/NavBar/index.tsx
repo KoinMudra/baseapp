@@ -1,94 +1,163 @@
 import * as React from 'react';
+import classnames from 'classnames';
+//import { History } from 'history';
 import {
     connect,
     MapDispatchToPropsFunction,
     MapStateToProps,
 } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
+import { Link, RouteProps } from 'react-router-dom';
 import { compose } from 'redux';
-import { Moon } from '../../assets/images/Moon';
-import { Sun } from '../../assets/images/Sun';
-import { colors } from '../../constants';
+import { pgRoutes } from '../../constants';
+import { LogoutIcon } from '../../assets/images/sidebar/LogoutIcon';
+import { ProfileIcon } from '../../assets/images/sidebar/ProfileIcon';
+import { SidebarIcons } from '../../assets/images/sidebar/SidebarIcons';
 import {
-    changeColorTheme,
+    changeUserDataFetch,
+    logoutFetch,
+    Market,
+    selectCurrentMarket,
+    selectUserInfo,
+    selectUserLoggedIn,
+    User,
     RootState,
-    selectCurrentColorTheme,
 } from '../../modules';
 
+interface State {
+    isOpenLanguage: boolean;
+}
+
 export interface ReduxProps {
-    colorTheme: string;
+    isLoggedIn: boolean;
+    currentMarket: Market | undefined;
+    user: User;
 }
 
 interface DispatchProps {
-    changeColorTheme: typeof changeColorTheme;
+    logoutFetch: typeof logoutFetch;
 }
+
 
 export interface OwnProps {
     onLinkChange?: () => void;
+	//history: History;
+    changeUserDataFetch: typeof changeUserDataFetch;
 }
 
-type Props = OwnProps & ReduxProps & DispatchProps;
+type Props = OwnProps & ReduxProps & RouteProps & DispatchProps;
 
-class NavBarComponent extends React.Component<Props> {
+class NavBarComponent extends React.Component<Props , State> {
+	public state = {
+        isOpenLanguage: false,
+    };
     public render() {
-        const { colorTheme } = this.props;
+        const { isLoggedIn, location } = this.props;
+		const address = location ? location.pathname : '';
+        //const address = this.props.history.location ? this.props.history.location.pathname : '';
+        const navbarClassName = classnames('pg-navbar');
 
         return (
-            <div className={'pg-navbar'}>
+            <div className={navbarClassName}>
                 <div className="pg-navbar__header-settings">
-                    <div className="pg-navbar__header-settings__switcher">
-                        <div
-                            className="pg-navbar__header-settings__switcher__items"
-                            onClick={e => this.handleChangeCurrentStyleMode(colorTheme === 'light' ? 'basic' : 'light')}
-                        >
-                            {this.getLightDarkMode()}
-                        </div>
-                    </div>
+					{this.renderProfileLink()}
+					
+					<div>
+						{pgRoutes(isLoggedIn).map(this.renderNavItems(address))}
+					</div>
+					
+					{this.renderLogout()}
                 </div>
+				
             </div>
         );
     }
 
-    private getLightDarkMode = () => {
-        const { colorTheme } = this.props;
+	public renderNavItems = (address: string) => (values: string[], index: number) => {
+        const { currentMarket } = this.props;
 
-        if (colorTheme === 'basic') {
-            return (
-                <React.Fragment>
-                    <div className="switcher-item">
-                        <Sun fillColor={colors.light.navbar.sun}/>
-                    </div>
-                    <div className="switcher-item switcher-item--active">
-                        <Moon fillColor={colors.light.navbar.moon}/>
-                    </div>
-                </React.Fragment>
-            );
-        }
+        const [name, url, img] = values;
+        const path = url.includes('/trading') && currentMarket ? `/trading/${currentMarket.id}` : url;
+        const isActive = (url === '/trading/' && address.includes('/trading')) || address === url;
 
+        const iconClassName = classnames('pg-navbar-wrapper-nav-item-img', {
+            'pg-navbar-wrapper-nav-item-img--active': isActive,
+        });
+
+		const stylesItem = {
+			   padding:"0 10px 0 10px",
+			   
+		   };
         return (
-            <React.Fragment>
-                <div className="switcher-item switcher-item--active">
-                    <Sun fillColor={colors.basic.navbar.sun}/>
-                </div>
-                <div className="switcher-item">
-                    <Moon fillColor={colors.basic.navbar.moon}/>
-                </div>
-            </React.Fragment>
+            <Link to={path} key={index} className={`${isActive && 'route-selected'}`}>
+                    <span style={stylesItem}>
+					<SidebarIcons
+                            className={iconClassName}
+                            name={img}
+                        />
+					</span>	
+                    <span>
+                        <FormattedMessage id={name} />
+                    </span>
+            </Link>
+        );
+    };
+	
+	public renderProfileLink = () => {
+        const { isLoggedIn, location } = this.props;
+        
+        const address = location ? location.pathname : '';
+        const isActive = address === '/profile';
+
+        const iconClassName = classnames('pg-navbar-wrapper-nav-item-img', {
+            'pg-navbar-wrapper-nav-item-img--active': isActive,
+        });
+		
+        return isLoggedIn && (
+           
+                <Link to="/profile" className={`${isActive && 'route-selected'}`}>
+                    <div className="pg-navbar-wrapper-profile-link">
+						<ProfileIcon className={iconClassName} />
+                        <span className={`pg-navbar-wrapper-profile-link-text`}>
+                            <FormattedMessage id={'page.header.navbar.profile'} />
+                        </span>
+                    </div>
+                </Link>
+           
         );
     };
 
-    private handleChangeCurrentStyleMode = (value: string) => {
-        this.props.changeColorTheme(value);
+    public renderLogout = () => {
+        const { isLoggedIn } = this.props;
+        if (!isLoggedIn) {
+            return null;
+        }
+
+        return (
+            <div className="pg-navbar-wrapper-logout">
+                <div className="pg-navbar-wrapper-logout-link" onClick={this.props.logoutFetch}>
+                    <LogoutIcon className="pg-navbar-wrapper-logout-link-img" />
+                    <span className="pg-navbar-wrapper-logout-link-text">
+                        <FormattedMessage id={'page.body.profile.content.action.logout'} />
+                    </span>
+                </div>
+            </div>
+        );
     };
+
 }
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> =
     (state: RootState): ReduxProps => ({
-        colorTheme: selectCurrentColorTheme(state),
+		isLoggedIn: selectUserLoggedIn(state),
+		currentMarket: selectCurrentMarket(state),
+		user: selectUserInfo(state),
     });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =
     dispatch => ({
-        changeColorTheme: payload => dispatch(changeColorTheme(payload)),
+        logoutFetch: () => dispatch(logoutFetch()),
+        changeUserDataFetch: payload => dispatch(changeUserDataFetch(payload)),
     });
 
 export const NavBar = compose(
