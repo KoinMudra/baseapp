@@ -22,14 +22,16 @@ export function* signInSaga(action: SignInFetch) {
             case 401:
                 if (error.message.indexOf('identity.session.not_active') > -1) {
                     yield put(signUpRequireVerification({requireVerification: true}));
-                }
-                yield put(alertPush({message: error.message, code: error.code, type: 'error'}));
-                break;
-            case 403:
-                if (error.message.indexOf('identity.session.invalid_otp') > -1) {
                     yield put(alertPush({message: error.message, code: error.code, type: 'error'}));
                 }
-                yield put(signInRequire2FA({ require2fa: true }));
+                if (error.message.indexOf('identity.session.missing_otp') > -1) {
+                    // yield put(alertPush({message: error.message, code: error.code, type: 'error'}));
+                    yield put(signInRequire2FA({ require2fa: true }));
+                }
+                if (error.message.indexOf('identity.session.invalid_otp') > -1) {
+                    yield put(alertPush({message: error.message, code: error.code, type: 'error'}));
+                    yield put(signInRequire2FA({ require2fa: true }));
+                }
                 break;
             default:
                 yield put(signInError(error));

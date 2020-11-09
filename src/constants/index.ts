@@ -1,4 +1,4 @@
-export const PG_TITLE_PREFIX = 'Cryptobase';
+export const PG_TITLE_PREFIX = 'KoinMudra';
 
 export const pgRoutes = (isLoggedIn: boolean, isLight?: boolean): string[][] => {
     const routes = [
@@ -28,16 +28,16 @@ export const colors = {
             down: '#E85E59',
         },
         navbar: {
-            avatar: '#28334E',
-            language: '#28334E',
-            logout: '#28334E',
-            sun: '#959EAB',
+            avatar: '#0160ff',
+            language: '#0160ff',
+            logout: '#0160ff',
+            sun: '#0160ff',
             moon: '#fff',
         },
     },
     basic: {
         chart: {
-            primary: '#1E2841',
+            primary: '#002666',
             up: '#54B489',
             down: '#E85E59',
         },
@@ -46,7 +46,7 @@ export const colors = {
             language: '#737F92',
             logout: '#fff',
             sun: '#fff',
-            moon: '#28334E',
+            moon: '#0160ff',
         },
     },
 };

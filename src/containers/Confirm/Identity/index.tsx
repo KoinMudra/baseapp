@@ -459,6 +459,7 @@ class IdentityComponent extends React.Component<Props, IdentityState> {
             metadata: JSON.stringify({
                 nationality: this.state.metadata.nationality,
             }),
+            confirm: true,
         };
         const isIdentity = labels.length && labels.find(w => w.key === 'profile' && w.value === 'verified' && w.scope === 'private');
 
